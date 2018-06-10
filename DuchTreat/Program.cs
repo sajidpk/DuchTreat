@@ -19,6 +19,17 @@ namespace DuchTreat
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                    .ConfigureAppConfiguration(SetupConfiguration)
+                   .UseStartup<Startup>();
+
+        private static void SetupConfiguration(WebHostBuilderContext ctx, IConfigurationBuilder builder)
+        {
+            // removing the default conifuration options
+            builder.Sources.Clear();
+
+            builder.AddJsonFile("config.json", false, true)
+                   .AddEnvironmentVariables();
+
+        }
     }
 }
